@@ -1,4 +1,4 @@
-namespace ConsoleApp1
+namespace TRL
 {
     public class PlayerSwapper
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{3BC0E9E8-AF2B-4475-B2E8-5B3B4196037D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SubstitutionSystem.Tests</RootNamespace>
-    <AssemblyName>SubstitutionSystem.Tests</AssemblyName>
+    <RootNamespace>TRL.Tests</RootNamespace>
+    <AssemblyName>TRL.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApp1\ConsoleApp1.csproj">
+    <ProjectReference Include="..\ConsoleApp1\TRL.csproj">
       <Project>{1603785C-6C41-454D-B791-1B37E9DE253F}</Project>
-      <Name>ConsoleApp1</Name>
+      <Name>TRL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
