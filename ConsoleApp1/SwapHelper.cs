@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace TRLScoreKeeper
 {
     public class SwapHelper
     {
@@ -12,23 +12,67 @@ namespace ConsoleApp1
         {
             var playersForRosterSorted =  playersForRosterInput
                                             .OrderBy(p => p.Position)
-                                            .ThenByDescending(p => p.Points)
-                                            .ThenByDescending(p => p.Starting).ToArray();
+                                            .ThenByDescending(p => p.Starting)
+                                            .ThenByDescending(p => p.Points).ToArray();
 
-            var starters = playersForRosterSorted.Where(p => p.Starting);
-            var benchPlayers = playersForRosterSorted.Where(p => !p.Starting);
+            playersForRosterSorted = SwapPlayersPrimaryPosition(playersForRosterSorted);
+            playersForRosterSorted = SwapPlayersSubPackage(playersForRosterSorted);
+
+            return playersForRosterSorted;
+        }
+
+        private Player[] SwapPlayersPrimaryPosition(Player[] playersForRosterSorted)
+        {
+            var starters = playersForRosterSorted.Where(p => p.Starting && !p.AlreadySubbed);
+            var benchPlayers = playersForRosterSorted.Where(p => !p.Starting && !p.AlreadySubbed);
 
             var indexOfStarter = 0;
-            foreach(var starter in starters)
+            foreach (var starter in starters)
             {
                 var swappedStarter = false;
                 var playerToStart = starter;
                 var playerToBench = new Player();
 
                 var indexOfBenchPlayer = 0;
-                foreach(var benchPlayer in benchPlayers)
+
+                foreach (var benchPlayer in benchPlayers)
                 {
-                    if(ShouldSwapPlayer(starter, benchPlayer))
+                    if (ShouldSwapPlayerPrimaryPosition(starter, benchPlayer))
+                    {
+                        swappedStarter = true;
+                        playerToStart = new PlayerSwapper(starter, benchPlayer).SwapPlayer();
+                        playerToBench = new PlayerSwapper(benchPlayer, starter).SwapPlayer();
+                        break;
+                    }                    
+                }
+                playersForRosterSorted[indexOfStarter] = playerToStart;
+                if (swappedStarter)
+                {
+                    playersForRosterSorted[starters.Count() + 1 + indexOfBenchPlayer] = playerToBench;
+                }
+                indexOfStarter++;
+            }
+
+            return playersForRosterSorted;
+        }
+
+        private Player[] SwapPlayersSubPackage(Player[] playersForRosterSorted)
+        {
+            var starters = playersForRosterSorted.Where(p => p.Starting && !p.AlreadySubbed);
+            var benchPlayers = playersForRosterSorted.Where(p => !p.Starting && !p.AlreadySubbed);
+
+            var indexOfStarter = 0;
+            foreach (var starter in starters)
+            {
+                var swappedStarter = false;
+                var playerToStart = starter;
+                var playerToBench = new Player();
+
+                var indexOfBenchPlayer = 0;
+
+                foreach (var benchPlayer in benchPlayers)
+                {
+                    if (ShouldSwapPlayerSubPackage(starter, benchPlayer))
                     {
                         swappedStarter = true;
                         playerToStart = new PlayerSwapper(starter, benchPlayer).SwapPlayer();
@@ -37,21 +81,36 @@ namespace ConsoleApp1
                     }
                 }
                 playersForRosterSorted[indexOfStarter] = playerToStart;
-                if(swappedStarter)
+                if (swappedStarter)
                 {
-                    playersForRosterSorted[indexOfStarter + indexOfBenchPlayer] = playerToBench;
+                    playersForRosterSorted[starters.Count() + indexOfBenchPlayer] = playerToBench;
                 }
+                indexOfStarter++;
             }
 
             return playersForRosterSorted;
         }
 
-        private bool ShouldSwapPlayer(Player startingPlayer, Player benchPlayer)
+        private bool ShouldSwapPlayerPrimaryPosition(Player startingPlayer, Player benchPlayer)
         {
             var shouldSwap = false;
             var subPackageHelper = new SubPackageHelper();
             if (StartersStartBenchBenched(startingPlayer, benchPlayer) && 
-                subPackageHelper.FillsSubPackage(startingPlayer.Position, benchPlayer.Position) && 
+                subPackageHelper.PositionsMatch(startingPlayer.Position, benchPlayer.Position) && 
+                PointCalculationHelper.ShouldSwapByPoints(startingPlayer.Points, benchPlayer.Points))
+            {
+                shouldSwap = true;
+            }
+
+            return shouldSwap;
+        }
+
+        private bool ShouldSwapPlayerSubPackage(Player startingPlayer, Player benchPlayer)
+        {
+            var shouldSwap = false;
+            var subPackageHelper = new SubPackageHelper();
+            if (StartersStartBenchBenched(startingPlayer, benchPlayer) &&
+                subPackageHelper.FillsSubPackage(startingPlayer.Position, benchPlayer.Position) &&
                 PointCalculationHelper.ShouldSwapByPoints(startingPlayer.Points, benchPlayer.Points))
             {
                 shouldSwap = true;

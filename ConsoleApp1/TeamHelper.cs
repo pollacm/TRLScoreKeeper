@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TRLScoreKeeper
 {
-    class Program
+    public class TeamHelper
     {
-        static void Main(string[] args)
+        public Team RepopulateTeam(Player[] players)
         {
-            //sort starters by position / 
+            return new Team();
         }
     }
 }

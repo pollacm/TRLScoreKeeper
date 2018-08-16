@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace TRLScoreKeeper
 {
     public static class PointCalculationHelper
     {
@@ -29,7 +29,7 @@ namespace ConsoleApp1
 
         public static bool ShouldSwapByPoints(decimal startingPoints, decimal benchedPoints)
         {
-            return startingPoints < benchedPoints * SwapPercentage;
+            return startingPoints <= benchedPoints * SwapPercentage;
         }
     }
 }
