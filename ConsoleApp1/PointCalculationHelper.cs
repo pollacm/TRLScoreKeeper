@@ -29,7 +29,7 @@ namespace TRLScoreKeeper
 
         public static bool ShouldSwapByPoints(decimal startingPoints, decimal benchedPoints)
         {
-            return startingPoints <= benchedPoints * SwapPercentage;
+            return startingPoints * SwapPercentage <= benchedPoints;
         }
     }
 }
