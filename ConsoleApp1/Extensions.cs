@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TRLScoreKeeper
+namespace TRL
 {
     public static class Extensions
     {

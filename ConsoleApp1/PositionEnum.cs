@@ -1,4 +1,4 @@
-﻿namespace TRLScoreKeeper
+﻿namespace TRL
 {
     public enum PositionEnum
     {

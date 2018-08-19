@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TRLScoreKeeper
+namespace TRL
 {
     public class SubPackageHelper
     {
